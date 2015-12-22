@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>BanRegio API - Demo</title>
+</head>
+
+<body>
+    <button onclick="brgLogin()">Conectar tu cuenta BanRegio</button>
+    <button onclick="brgLogout()">Desconectar tu cuenta BanRegio</button>
+    <br>
+    <hr>
+    #cliente<input id='acc-number'/><br>
+    tarjeta <input id='tar-last'/><br>
+    password <input type='password' id='nip'>
+    <br>    
+    <button onclick="addAccount()">Add an account</button>    
+    <button onclick="getAccounts()">Get Accounts</button>
+    <hr>
+    Id de cuenta <input id='acc-id'>
+    <br>
+    <button onclick="getAccount()">Get Account</button>
+    <button onclick="deleteAccount()">Delete Account</button>
+    <button onclick="getTransactions()">Get Transactions</button>
+    <hr>
+
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <script src="js/banregio-sdk.js"></script>
+    <script>
+    banregio.api.init({
+        config: {
+            host: 'http://localhost:8000/',
+            clientId: 'roGo2kunWPUI5GS5oeAUCcsuaFCZHeEV0ZU0m79f',
+            clientSecret: '2mOcQvmwXtuWupHnTQyuVr5zbNVTkapvv34wgxiR97cmp09VaN6T1BUlgOe2Cr34j9zw8A98Lcu8FzqQd8eHtqsV6eBWs9IRtGUzCY1zKDKx3b4qA7zCvTqoRmxp4KrR',
+            redirectUri: 'http://localhost:8080/index.html'
+        },
+        onLogin: function() {
+            console.log('Logged in');
+        },
+        onLogout: function() {
+            console.log('Logged out');
+        }
+    });
+
+    function brgLogin() {
+        banregio.api.login();
+    }
+
+    function brgLogout() {
+        banregio.api.logout();
+    }
+
+    function getAccounts() {
+        banregio.api.getAccounts()
+        .done(function(data) {
+            console.log(data.accounts);
+        })
+        .fail(function() {
+            console.log('Error while retrieving accounts');
+        });
+    }
+
+    function addAccount(JQuery) {
+        var accn = $('#acc-number'), tarl = $('#tar-last'), nip=$('#nip');
+        console.log(accn.val());
+        console.log(tarl.val());
+        banregio.api.addAccount(accn.val(), tarl.val(), nip.val())
+        .done(function(data) {
+            console.log(data);
+            window.account_id = data.account.id;
+        })
+        .fail(function(data) {
+            console.log('Error while adding a new account');
+            console.log(data);
+        });
+    }
+
+    function getTransactions(JQuery) {
+        var accid = $('#acc-id').val();
+        banregio.api.getTransactions(accid)
+        .done(function(data) {
+            console.log('done');
+            console.log(data);
+        })
+        .fail(function() {
+            console.log('Error while loading account transactions');
+        });
+    }
+
+    function getAccount(JQuery){
+        var accid = $('#acc-id').val();
+        banregio.api.getAccount(accid)
+        .done(function(data) {
+            console.log('done');
+            console.log(data);
+        })
+        .fail(function() {
+            console.log(data);
+            console.log('Error while loading account transactions');
+        });   
+    }
+
+    function deleteAccount(JQuery){
+        var accid = $('#acc-id').val();
+        banregio.api.deleteAccount(accid)
+        .done(function(data) {
+            console.log('done');
+            console.log(data);
+        })
+        .fail(function(data) {
+            
+            console.log('Error while loading account transactions');
+            console.log(data);
+        });   
+    }
+    </script>
+</body>
+</html>
