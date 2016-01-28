@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>BanRegio API - Demo</title>
+    <title>BanRegio API - SandboxDemo</title>
 </head>
 
 <body>
@@ -30,9 +30,9 @@
     banregio.api.init({
         config: {
             host: 'http://localhost:8000/',
-            clientId: 'roGo2kunWPUI5GS5oeAUCcsuaFCZHeEV0ZU0m79f',
-            clientSecret: '2mOcQvmwXtuWupHnTQyuVr5zbNVTkapvv34wgxiR97cmp09VaN6T1BUlgOe2Cr34j9zw8A98Lcu8FzqQd8eHtqsV6eBWs9IRtGUzCY1zKDKx3b4qA7zCvTqoRmxp4KrR',
-            redirectUri: 'http://localhost:8080/index.html'
+            clientId: 'qH5Rgmx3cgTt9e6W92hf9dhVFaY0yhbqBgRaoxwB',
+            clientSecret: 'MxKLslOsOepeB2QiKfXM5lCIi4QFKbkkFlyuoKvu4hi3VV0uyfuUNr4MR4AY7rw4yC4ioEyrtOyWT9991QueYIETaOr9PLe2BpvTc2lcq8dCYP1T63ivRUVuSrgmIUY3',
+            redirectUri: 'http://localhost:8081/index.html'
         },
         onLogin: function() {
             console.log('Logged in');
@@ -82,8 +82,9 @@
             console.log('done');
             console.log(data);
         })
-        .fail(function() {
+        .fail(function(data) {
             console.log('Error while loading account transactions');
+            console.log(data);
         });
     }
 
@@ -94,9 +95,10 @@
             console.log('done');
             console.log(data);
         })
-        .fail(function() {
-            console.log(data);
+        .fail(function(data) {
+            
             console.log('Error while loading account transactions');
+            console.log(data);
         });   
     }
 

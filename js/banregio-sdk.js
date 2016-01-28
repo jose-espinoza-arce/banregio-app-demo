@@ -10,8 +10,8 @@ banregio.api = function() {
         endpoints = {
             authorize: 'oauth/authorize',
             token: 'oauth/token/',
-            accounts: 'api/v2/accounts/',
-            transactions: 'api/v2/accounts/{}/transactions/'
+            accounts: 'api/v1/accounts/',
+            transactions: 'api/v1/accounts/{}/transactions/'
         }, getParameterByName, removeURLParameter, detectOAuthRedirect, saveTokenData,
         onLogin, onLogout, apiRequest;
 
@@ -139,9 +139,16 @@ banregio.api = function() {
 
     this.addAccount = function(clientNumber, last4Digits, pin) {
         return apiRequest(endpoints.accounts, 'POST', {            
-            numerocliente: clientNumber,
+            /*numerocliente: clientNumber,
             last_4_digits: last4Digits,
-            nip: pin            
+            nip: pin*/ 
+            client: {
+                number: clientNumber
+            },
+            card: {
+                last_4_digits: last4Digits,
+                pin: pin
+            }          
         });
     };
 
