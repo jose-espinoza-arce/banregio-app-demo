@@ -11,7 +11,9 @@ banregio.api = function() {
             authorize: 'oauth/authorize',
             token: 'oauth/token/',
             accounts: 'api/v1/accounts/',
-            transactions: 'api/v1/accounts/{}/transactions/'
+            transactions: 'api/v1/accounts/{}/transactions/',
+            targetaccounts: 'api/v1/targetaccounts/',
+            transfer: 'api/v1/accounts/{}/ptransfers/'
         }, getParameterByName, removeURLParameter, detectOAuthRedirect, saveTokenData,
         onLogin, onLogout, apiRequest;
 
@@ -156,6 +158,10 @@ banregio.api = function() {
         return apiRequest(endpoints.accounts, 'GET', null);
     };
 
+    this.getTargetAccounts = function() {
+        return apiRequest(endpoints.targetaccounts, 'GET', null);
+    };
+
     this.getAccount = function(accountId){
         console.log(accountId);
         return apiRequest(endpoints.accounts + accountId + '/', 'GET', null);
@@ -163,6 +169,23 @@ banregio.api = function() {
 
     this.deleteAccount = function(accountId){
         return apiRequest(endpoints.accounts + accountId + '/', 'DELETE', null);
+    }; 
+
+    this.postTransfer = function(accountId, targetaccount, tiposolicitud, cantidad, concepto, tipotransferencia, frecuencia, fechaprimerenvio, tipoduracion, duraciontranferencia, duracionfecha, diasanterioresenviomail, token){
+        return apiRequest(endpoints.transfer.replace('{}', accountId), 'POST', {   
+            targetaccount: targetaccount,
+            tiposolicitud: tiposolicitud,
+            cantidad: cantidad,
+            concepto: concepto,
+            tipotransferencia: tipotransferencia,
+            frecuencia: frecuencia,
+            fechaprimerenvio: fechaprimerenvio,
+            tipoduracion: tipoduracion,
+            duraciontranferencia: duraciontranferencia,
+            duracionfecha: duracionfecha,
+            diasanterioresenviomail: diasanterioresenviomail,
+            token: token        
+        });
     }; 
 
     this.getTransactions = function(accountId) {

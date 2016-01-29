@@ -23,19 +23,57 @@
     <button onclick="deleteAccount()">Delete Account</button>
     <button onclick="getTransactions()">Get Transactions</button>
     <hr>
+    <button onclick="brgLogin()">Add TargetAccount</button><br>
+    cuenta <select name="account" id='account'>
+    </select><br>
+    cuentaDestino <select name="target-account" id='target-account'>
+    </select><br>
+    cantidad <input id='amount'/><br>
+    concepto <input id='concept'/><br>
+    tiposolicitud <select name="request" id='request-type'>
+      <option value="BR">BR</option> 
+      <option value="SPEI">SPEI</option>
+    </select><br>
+    tipotransferencia <select name="trans" id='trans-type'>
+      <option value="I">Inmediata</option> 
+      <option value="P">Programada</option>
+    </select>
+    <br>
+    <br>
+    frecuencia <select name="frequency" id='frequency'>
+      <option value="U">Única vez</option> 
+      <option value="D">Diaria</option>
+      <option value="S">Semanal</option> 
+      <option value="C">Catorcenal</option>
+      <option value="M">Mensual</option>
+    </select><br>
+    fechaprimerenvio <input id='ini-date' type='date'/><br>
+    tipoduracion <select name="dur" id='dur-type'>
+      <option value="T">Por cantidad de envios</option> 
+      <option value="F">Hasta Fecha</option>
+      <option value="I">Sin terminacion</option> 
+    </select><br>
+    duraciontranferencia <input id='trans-length'/><br>
+    duracionfecha <input id='end-date' type='date'/><br>
+    diasanterioresenviomail <input id='mail-date'/><br>
+    token <input id='token'/><br>
+    <button onclick="postTransfer()">Post Transfer</button>
+    <hr>
 
     <script src="js/jquery-2.1.3.min.js"></script>
     <script src="js/banregio-sdk.js"></script>
     <script>
     banregio.api.init({
         config: {
-            host: 'http://localhost:8000/',
-            clientId: 'qH5Rgmx3cgTt9e6W92hf9dhVFaY0yhbqBgRaoxwB',
-            clientSecret: 'MxKLslOsOepeB2QiKfXM5lCIi4QFKbkkFlyuoKvu4hi3VV0uyfuUNr4MR4AY7rw4yC4ioEyrtOyWT9991QueYIETaOr9PLe2BpvTc2lcq8dCYP1T63ivRUVuSrgmIUY3',
-            redirectUri: 'http://localhost:8081/index.html'
+            host: 'http://10.64.64.57:8000/',
+            clientId: 'SiYJJGUf1oB8yVUvn1j0XTpT8ECnyUbxniFJu7nj',
+            clientSecret: 'zVh0bbIIhEw4Iq3NhkixH0nTHZ3GyeoYqlCTvyYbuHb6ijr8FIVwUWQpBBNAs8NWp5d4BKgE6bh59wchQcipcZG9nHOSaWtpOxoge5tYneSYKbz8ZSdtW7hKba8bQ3L6',
+            redirectUri: 'http://localhost:8090/index.html'
         },
         onLogin: function() {
             console.log('Logged in');
+            fillAccountsSelect();
+            fillTargetAccountsSelect();
         },
         onLogout: function() {
             console.log('Logged out');
@@ -114,6 +152,51 @@
             console.log('Error while loading account transactions');
             console.log(data);
         });   
+    }
+
+    function postTransfer(JQuery) {
+        var accountId = $('#account'), targetaccount = $('#target-account'), tiposolicitud = $('#request-type'), 
+        cantidad = $('#amount'), concepto = $('#concept'), tipotransferencia = $('#trans-type'), 
+        frecuencia = $('#frequency'), fechaprimerenvio = $('#ini-date'), tipoduracion = $('#dur-type'), 
+        duraciontranferencia = $('#trans-length'), duracionfecha = $('#end-date'), diasanterioresenviomail = $('#mail-date'), 
+        token = $('#token');
+
+        banregio.api.postTransfer(accountId.val(), targetaccount.val(), tiposolicitud.val(),
+            cantidad.val(), concepto.val(), tipotransferencia.val(),
+            frecuencia.val(), fechaprimerenvio.val(), tipoduracion.val(),
+            duraciontranferencia.val(), duracionfecha.val(), diasanterioresenviomail.val(),
+            token.val())
+        .done(function(data) {
+            console.log('done')
+            console.log(data);
+        })
+        .fail(function(data) {
+            console.log('Error while making transfer');
+            console.log(data);
+        });
+    }
+
+    function fillAccountsSelect(JQuery){       
+        banregio.api.getAccounts().done(function (data) {
+            for (var i = 0; i < data.accounts.length ; i++) {
+                $('#account').append($('<option>', {
+                    value: data.accounts[i].id,
+                    text: data.accounts[i].account_number
+                }));
+            };    
+        });
+    }
+
+    function fillTargetAccountsSelect(JQuery){       
+        banregio.api.getTargetAccounts().done(function (data) {
+            console.log(data);
+            for (var i = 0; i < data.targetaccounts.length ; i++) {
+                $('#target-account').append($('<option>', {
+                    value: data.targetaccounts[i].id,
+                    text: data.targetaccounts[i].cuentadestino
+                }));
+            };    
+        });
     }
     </script>
 </body>
