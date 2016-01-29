@@ -30,8 +30,8 @@
     banregio.api.init({
         config: {
             host: 'http://localhost:8000/',
-            clientId: 'roGo2kunWPUI5GS5oeAUCcsuaFCZHeEV0ZU0m79f',
-            clientSecret: '2mOcQvmwXtuWupHnTQyuVr5zbNVTkapvv34wgxiR97cmp09VaN6T1BUlgOe2Cr34j9zw8A98Lcu8FzqQd8eHtqsV6eBWs9IRtGUzCY1zKDKx3b4qA7zCvTqoRmxp4KrR',
+            clientId: '6f6XBiOKkwwzKvXkBMsxitSlRRTOViSXAhrslIU4',
+            clientSecret: '401G5sgDr8bTG5Q1Zz50XKUfotQmyFDdIfd0j1akdfoujN1exUJ1ws1eVNBWeRJL8BeEWix1yuZxV4oF6nJUy7Z8Fb0p0FOwsYuh6RrLPN31UX945EOGXJtX62RAtiwf',
             redirectUri: 'http://localhost:8080/index.html'
         },
         onLogin: function() {
@@ -82,8 +82,9 @@
             console.log('done');
             console.log(data);
         })
-        .fail(function() {
+        .fail(function(data) {
             console.log('Error while loading account transactions');
+            console.log(data);
         });
     }
 
@@ -94,9 +95,10 @@
             console.log('done');
             console.log(data);
         })
-        .fail(function() {
-            console.log(data);
+        .fail(function(data) {
+            
             console.log('Error while loading account transactions');
+            console.log(data);
         });   
     }
 
