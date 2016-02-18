@@ -10,8 +10,10 @@ banregio.api = function() {
         endpoints = {
             authorize: 'oauth/authorize',
             token: 'oauth/token/',
-            accounts: 'api/v1/accounts/',
-            transactions: 'api/v1/accounts/{}/transactions/',
+            v1accounts: 'api/v1/accounts/',
+            v1transactions: 'api/v1/accounts/{}/transactions/',
+            accounts: 'accounts/',
+            transactions: 'accounts/{}/transactions/',
             targetaccounts: 'api/v1/targetaccounts/',
             transfer: 'api/v1/accounts/{}/ptransfers/'
         }, getParameterByName, removeURLParameter, detectOAuthRedirect, saveTokenData,
@@ -71,6 +73,18 @@ banregio.api = function() {
 
     this.logout = function() {
         removeTokenData();
+    };
+
+    this.getTarAccUri = function() {
+        var buildTarAccUri = function() {
+            return host 
+                + 'transfer/targetaccount/add'
+                + '?response_type=code'
+                + '&client_id=' + clientId
+                + '&redirect_uri=' + redirectUri;
+        };
+
+        location.href = buildTarAccUri();
     };
 
     this.getAccessToken = function(code) {
@@ -140,7 +154,7 @@ banregio.api = function() {
     };
 
     this.addAccount = function(clientNumber, last4Digits, pin) {
-        return apiRequest(endpoints.accounts, 'POST', {            
+        return apiRequest(endpoints.v1accounts, 'PUT', {            
             /*numerocliente: clientNumber,
             last_4_digits: last4Digits,
             nip: pin*/ 
@@ -155,7 +169,7 @@ banregio.api = function() {
     };
 
     this.getAccounts = function() {
-        return apiRequest(endpoints.accounts, 'GET', null);
+        return apiRequest(endpoints.v1accounts, 'GET', null);
     };
 
     this.getTargetAccounts = function() {
@@ -164,14 +178,14 @@ banregio.api = function() {
 
     this.getAccount = function(accountId){
         console.log(accountId);
-        return apiRequest(endpoints.accounts + accountId + '/', 'GET', null);
+        return apiRequest(endpoints.v1accounts + accountId + '/', 'GET', null);
     };
 
     this.deleteAccount = function(accountId){
-        return apiRequest(endpoints.accounts + accountId + '/', 'DELETE', null);
+        return apiRequest(endpoints.v1accounts + accountId + '/', 'DELETE', null);
     }; 
 
-    this.postTransfer = function(accountId, targetaccount, tiposolicitud, cantidad, concepto, tipotransferencia, frecuencia, fechaprimerenvio, tipoduracion, duraciontranferencia, duracionfecha, diasanterioresenviomail, token){
+    this.postTransfer = function(accountId, targetaccount, tiposolicitud, cantidad, concepto, tipotransferencia, frecuencia, fechaprimerenvio, tipoduracion, duraciontransferencia, duracionfecha, diasanterioresenviomail, token){
         return apiRequest(endpoints.transfer.replace('{}', accountId), 'POST', {   
             targetaccount: targetaccount,
             tiposolicitud: tiposolicitud,
@@ -181,16 +195,16 @@ banregio.api = function() {
             frecuencia: frecuencia,
             fechaprimerenvio: fechaprimerenvio,
             tipoduracion: tipoduracion,
-            duraciontranferencia: duraciontranferencia,
-            duracionfecha: duracionfecha,
-            diasanterioresenviomail: diasanterioresenviomail,
-            token: token        
+            duraciontransferencia: duraciontransferencia,
+            //duracionfecha: duracionfecha,
+            //diasanterioresenviomail: diasanterioresenviomail,
+            //token: token        
         });
     }; 
 
     this.getTransactions = function(accountId) {
         return apiRequest(
-            endpoints.transactions.replace('{}', accountId),
+            endpoints.v1transactions.replace('{}', accountId),
             'GET',
             null
         );

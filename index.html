@@ -23,7 +23,7 @@
     <button onclick="deleteAccount()">Delete Account</button>
     <button onclick="getTransactions()">Get Transactions</button>
     <hr>
-    <button onclick="brgLogin()">Add TargetAccount</button><br>
+    <button onclick="brgTarAcc()">Add TargetAccount</button><br>
     cuenta <select name="account" id='account'>
     </select><br>
     cuentaDestino <select name="target-account" id='target-account'>
@@ -65,9 +65,9 @@
     <script>
     banregio.api.init({
         config: {
-            host: 'http://10.64.64.57:8000/',
-            clientId: 'SiYJJGUf1oB8yVUvn1j0XTpT8ECnyUbxniFJu7nj',
-            clientSecret: 'zVh0bbIIhEw4Iq3NhkixH0nTHZ3GyeoYqlCTvyYbuHb6ijr8FIVwUWQpBBNAs8NWp5d4BKgE6bh59wchQcipcZG9nHOSaWtpOxoge5tYneSYKbz8ZSdtW7hKba8bQ3L6',
+            host: 'http://10.64.64.25:8000/',
+            clientId: 'OGcy2Cj5py6Xpl2nLb7RxtPK7KfG9QzH2IXTlJNb',
+            clientSecret: 'UWyywAZsbVhSTNiQ8aMrCF8A0SVLZjxrZjYiEQPVcVYKjscF45ckVYwyfuHScKVYwi0dRgSEsfLtlthBCoJSg1cF62SKzyIMStPWIbMDSJcWN0FG4atL8XTs0HxDJXzj',
             redirectUri: 'http://localhost:8090/index.html'
         },
         onLogin: function() {
@@ -86,6 +86,10 @@
 
     function brgLogout() {
         banregio.api.logout();
+    }
+
+    function brgTarAcc() {
+        banregio.api.getTarAccUri();
     }
 
     function getAccounts() {
@@ -158,13 +162,13 @@
         var accountId = $('#account'), targetaccount = $('#target-account'), tiposolicitud = $('#request-type'), 
         cantidad = $('#amount'), concepto = $('#concept'), tipotransferencia = $('#trans-type'), 
         frecuencia = $('#frequency'), fechaprimerenvio = $('#ini-date'), tipoduracion = $('#dur-type'), 
-        duraciontranferencia = $('#trans-length'), duracionfecha = $('#end-date'), diasanterioresenviomail = $('#mail-date'), 
+        duraciontransferencia = $('#trans-length'), duracionfecha = $('#end-date'), diasanterioresenviomail = $('#mail-date'), 
         token = $('#token');
 
         banregio.api.postTransfer(accountId.val(), targetaccount.val(), tiposolicitud.val(),
             cantidad.val(), concepto.val(), tipotransferencia.val(),
             frecuencia.val(), fechaprimerenvio.val(), tipoduracion.val(),
-            duraciontranferencia.val(), duracionfecha.val(), diasanterioresenviomail.val(),
+            duraciontransferencia.val(), duracionfecha.val(), diasanterioresenviomail.val(),
             token.val())
         .done(function(data) {
             console.log('done')
