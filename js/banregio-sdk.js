@@ -153,11 +153,12 @@ banregio.api = function() {
         return $.ajax(ajaxCall);
     };
 
-    this.addAccount = function(clientNumber, last4Digits, pin) {
-        return apiRequest(endpoints.v1accounts, 'PUT', {            
+    this.addAccount = function(accountType, clientNumber, last4Digits, pin) {
+        return apiRequest(endpoints.v1accounts, 'POST', {    
             /*numerocliente: clientNumber,
             last_4_digits: last4Digits,
             nip: pin*/ 
+            type: accountType,
             client: {
                 number: clientNumber
             },
@@ -176,10 +177,20 @@ banregio.api = function() {
         return apiRequest(endpoints.targetaccounts, 'GET', null);
     };
 
+    this.getTargetAccount = function(taccountId, monto){
+        console.log(taccountId);
+        console.log(monto);
+        return apiRequest(
+            endpoints.targetaccounts + taccountId + '/?amount=' + monto, 
+            'GET', null);
+    };
+
     this.getAccount = function(accountId){
         console.log(accountId);
         return apiRequest(endpoints.v1accounts + accountId + '/', 'GET', null);
     };
+
+
 
     this.deleteAccount = function(accountId){
         return apiRequest(endpoints.v1accounts + accountId + '/', 'DELETE', null);
@@ -196,15 +207,23 @@ banregio.api = function() {
             fechaprimerenvio: fechaprimerenvio,
             tipoduracion: tipoduracion,
             duraciontransferencia: duraciontransferencia,
-            //duracionfecha: duracionfecha,
+            duracionfecha: duracionfecha,
             //diasanterioresenviomail: diasanterioresenviomail,
-            //token: token        
+            token: token        
         });
     }; 
 
-    this.getTransactions = function(accountId) {
+    this.getTransactions = function(accountId, mindate, maxdate) {
         return apiRequest(
-            endpoints.v1transactions.replace('{}', accountId),
+            endpoints.v1transactions.replace('{}', accountId) + '?min_date=' + mindate + '&max_date=' + maxdate,
+            'GET',
+            null
+        );
+    };
+
+    this.getTransfers = function(accountId) {
+        return apiRequest(('{}', accountId),
+            endpoints.transfer.replace('{}', accountId),
             'GET',
             null
         );
