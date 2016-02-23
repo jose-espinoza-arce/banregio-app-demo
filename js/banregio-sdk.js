@@ -222,11 +222,7 @@ banregio.api = function() {
     };
 
     this.getTransfers = function(accountId) {
-        return apiRequest(('{}', accountId),
-            endpoints.transfer.replace('{}', accountId),
-            'GET',
-            null
-        );
+        return apiRequest(endpoints.transfer.replace('{}', accountId), 'GET', null);
     };
 
     return this;
