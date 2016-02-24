@@ -27,8 +27,9 @@
     <button onclick="getTransactions()">Get Transactions</button>
     <button onclick="getTransfers()">Get Transfers</button>
     <hr>
+    Id de cuenta <input id='acct-id'><br>
     Id de transferencia <input id='tra-id'><br>
-    <button onclick="deleteTransfer()">Delete Transfer</button>
+    <button onclick="cancelTransfer()">Cancel Transfer</button>
     <hr>
     <button onclick="brgTarAcc()">Add TargetAccount</button><br>
     cuenta <select name="account" id='account'>
@@ -66,8 +67,7 @@
     token <input id='token'/><br>
     <button onclick="postTransfer()">Post Transfer</button>
     <button onclick="getToken()">Get Token</button><br>
-    <br>
-    Id targetAccount <input id='token'/><br> <button onclick="">Borrar cuenta destino</button>
+    <br><button onclick="deleteTargetAccount()">Borrar cuenta destino</button>
     <hr>
 
     <script src="js/jquery-2.1.3.min.js"></script>
@@ -175,6 +175,35 @@
         var taccid = $('#target-account').val(),
         amount = $('#amount').val();
         banregio.api.getTargetAccount(taccid, amount)
+        .done(function(data) {
+            console.log('done');
+            console.log(data);
+        })
+        .fail(function(data) {
+            
+            console.log('Error while loading account transactions');
+            console.log(data);
+        });   
+    }
+
+    function cancelTransfer(JQuery){
+        var transfer = $('#tra-id').val();
+        var acctid = $('#acct-id').val();
+        banregio.api.cancelTransfer(transfer, acctid)
+        .done(function(data) {
+            console.log('done');
+            console.log(data);
+        })
+        .fail(function(data) {
+            
+            console.log('Error while loading account transactions');
+            console.log(data);
+        });   
+    }
+
+    function deleteTargetAccount(JQuery){
+        var taccid = $('#target-account').val();
+        banregio.api.deleteTargetAccount(taccid)
         .done(function(data) {
             console.log('done');
             console.log(data);
