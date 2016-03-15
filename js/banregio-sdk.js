@@ -154,7 +154,7 @@ banregio.api = function() {
     };
 
     this.addAccount = function(accountType, clientNumber, last4Digits, pin) {
-        return apiRequest(endpoints.v1accounts, 'POST', {    
+        return apiRequest(endpoints.accounts, 'PUT', {    
             /*numerocliente: clientNumber,
             last_4_digits: last4Digits,
             nip: pin*/ 
