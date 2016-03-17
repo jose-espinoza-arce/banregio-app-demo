@@ -78,7 +78,7 @@ banregio.api = function() {
     this.getTarAccUri = function() {
         var buildTarAccUri = function() {
             return host 
-                + 'transfer/targetaccount/add'
+                + 'transfer/cuentasdestino/agregar/'
                 + '?response_type=code'
                 + '&client_id=' + clientId
                 + '&redirect_uri=' + redirectUri;
@@ -154,7 +154,7 @@ banregio.api = function() {
     };
 
     this.addAccount = function(accountType, clientNumber, last4Digits, pin) {
-        return apiRequest(endpoints.accounts, 'PUT', {    
+        return apiRequest(endpoints.v1accounts, 'POST', {    
             /*numerocliente: clientNumber,
             last_4_digits: last4Digits,
             nip: pin*/ 
